@@ -2,6 +2,7 @@ package spring.mvc;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -17,7 +18,12 @@ public class MyController {
     }
 
     @RequestMapping("/askDetails")
-    public String askEmployeeDetail() {
+    public String askEmployeeDetail(Model model) {
+        Employee employee = new Employee();
+        employee.setName("name");
+        employee.setSurname("surname");
+        employee.setSalary(0);
+        model.addAttribute("employee", employee);
         return "ask-emp-detail-view";
     }
 
@@ -35,10 +41,24 @@ public class MyController {
 //        return "show-emp-details-view";
 //    }
 
+//    @RequestMapping("/showDetails")
+//    public String showEmpDetails(@RequestParam("employeeName") String empName, Model model) {
+//        empName = "Mister " + empName;
+//        model.addAttribute("attributeName", empName);
+//        return "show-emp-details-view";
+//    }
+
     @RequestMapping("/showDetails")
-    public String showEmpDetails(@RequestParam("employeeName") String empName, Model model) {
-        empName = "Mister " + empName;
-        model.addAttribute("attributeName", empName);
+    public String showEmpDetails(@ModelAttribute("employee") Employee emp) {
+        String name = emp.getName();
+        emp.setName("Mr. " + name);
+
+        String surname = emp.getSurname();
+        emp.setSurname(surname + "!!!!!");
+
+        int salary = emp.getSalary();
+        emp.setSalary(salary * 5);
+
         return "show-emp-details-view";
     }
 }
