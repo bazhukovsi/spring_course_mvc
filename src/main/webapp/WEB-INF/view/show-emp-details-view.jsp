@@ -8,6 +8,6 @@
 <h3>Уважаемый Employee! Рад приветствовать Вас!!!!</h3>
 <br>
 <%--Ваше имя: ${param.employeeName}--%>
-Ваше имя : ${attributeName} ${description}
+Ваше имя : ${attributeName}
 </body>
 </html>
