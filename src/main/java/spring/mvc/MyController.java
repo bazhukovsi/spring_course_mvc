@@ -1,12 +1,15 @@
 package spring.mvc;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/employee")
@@ -19,11 +22,11 @@ public class MyController {
 
     @RequestMapping("/askDetails")
     public String askEmployeeDetail(Model model) {
-        Employee employee = new Employee();
-        employee.setName("name");
-        employee.setSurname("surname");
-        employee.setSalary(0);
-        model.addAttribute("employee", employee);
+//        Employee employee = new Employee();
+//        employee.setName("name");
+//        employee.setSurname("surname");
+//        employee.setSalary(0);
+        model.addAttribute("employee", new Employee());
         return "ask-emp-detail-view";
     }
 
@@ -49,16 +52,14 @@ public class MyController {
 //    }
 
     @RequestMapping("/showDetails")
-    public String showEmpDetails(@ModelAttribute("employee") Employee emp) {
-        String name = emp.getName();
-        emp.setName("Mr. " + name);
+    public String showEmpDetails(@Valid @ModelAttribute("employee") Employee emp,
+                                 BindingResult bindingResult) {
 
-        String surname = emp.getSurname();
-        emp.setSurname(surname + "!!!!!");
-
-        int salary = emp.getSalary();
-        emp.setSalary(salary * 5);
-
-        return "show-emp-details-view";
+        if (bindingResult.hasErrors()) {
+            System.out.println(bindingResult.hasErrors());
+            return "ask-emp-detail-view";
+        } else {
+            return "show-emp-details-view";
+        }
     }
 }
